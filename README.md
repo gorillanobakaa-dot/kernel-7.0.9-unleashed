@@ -16,7 +16,7 @@ In this kernel, we have completely cut those handcuffs. Your computer will now r
 
 ---
 
-### 🛠️ The 25 Crucial Upgrades (Explained Simply)
+### 🛠️ The 27 Crucial Upgrades (Explained Simply)
 
 #### 📡 Part 1: Atheros Wi-Fi & Regulatory Overrides (12 Tweaks)
 Your Wi-Fi card is physically capable of broadcasting much louder and using wider channels, but it is forced to be "polite." Here is how we unleashed it:
@@ -39,7 +39,7 @@ Sound cards try to save power by going to sleep, which causes popping, crackling
 14. **System Interrupt Suppression**: Every time the audio card changes power states, it interrupts the CPU. We stabilized the audio routing to stop these interrupt spikes, eliminating micro-stutters.
 15. **VAIO Pin Grounding**: We grounded unused microphone line pins to stop electrical background hiss and static noise from leaking into your headphones.
 
-#### 🚀 Part 3: High-Speed TCP Networking (10 Tweaks)
+#### 🚀 Part 3: High-Speed TCP Networking (12 Tweaks)
 Linux network settings were designed in the era of dial-up internet. We scaled the buffer pipes to match modern multi-gigabit fiber connections:
 16. **Firehose Startup (128 CWND)**: Instead of testing the connection slowly (sending 10 packets), we blast 128 packets of data instantly during the initial connection.
 17. **Hyper-Fast Recovery (10ms RTO)**: If a packet is lost, standard systems wait 200 milliseconds to retry. We slashed this to 10 milliseconds.
@@ -47,10 +47,12 @@ Linux network settings were designed in the era of dial-up internet. We scaled t
 19. **Instant Handshake**: Slash initial connection timeout from 1 second to 100 milliseconds to connect to web servers instantly.
 20. **Rapid Delayed ACKs**: Slash acknowledgment delays to 20ms maximum to keep data flowing without pauses.
 21. **Instant Socket Recycling**: Slash the wait time to destroy dead sockets from 60 seconds to 1 second, keeping memory clean.
-22. **Fail-Fast Handshakes**: Limit handshake retries to 3 attempts, instantly freeing resources from dead-weight connections.
-23. **Fast Keepalive Probes**: Slashed idle keepalive verification from 2 hours to 15 minutes to clear out dead routes.
-24. **Industrial-Sized Data Pipes**: We expanded the memory buffers for reading and writing data from a few kilobytes to 16 Megabytes (default) and 64 Megabytes (maximum).
-25. **Preventing Window Collapse**: We locked the initial transmission window clamp to 65,535 packets to prevent the system from shrinking your internet pipes during minor network jitters.
+22. **SYN Handshake Fail-Fast**: Limit initial connection request (SYN) retries to 3 attempts, freeing resources from dead-weight connections fast.
+23. **SYN-ACK Handshake Fail-Fast**: Limit connection confirmation (SYN-ACK) retries to 3 attempts, preventing the system from wasting time on dead routes.
+24. **Fail-Fast Linger**: Reduced TCP connection close retry attempts from 15 to 8 to clean up and close connections twice as fast.
+25. **Fast Keepalive Probes**: Slashed idle keepalive verification from 2 hours to 15 minutes to clear out dead routes.
+26. **Industrial-Sized Data Pipes**: We expanded the memory buffers for reading and writing data from a few kilobytes to 16 Megabytes (default) and 64 Megabytes (maximum).
+27. **Preventing Window Collapse**: We locked the initial transmission window clamp to 65,535 packets to prevent the system from shrinking your internet pipes during minor network jitters.
 
 ---
 
